@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JavaScript Onscroll Events Presentation</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/theme/moon.css" id="theme">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts for Myanmar (Padauk) -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body, .reveal {
+            font-family: 'Padauk', 'Pyidaungsu', Tahoma, Arial, sans-serif !important;
+            background: linear-gradient(135deg, #1e2a38 0%, #0d1117 100%);
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+            font-family: 'Padauk', 'Pyidaungsu', sans-serif !important;
+            text-transform: none !important;
+            font-weight: 700;
+            color: #58a6ff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .reveal p, .reveal li {
+            line-height: 1.8;
+            font-size: 1.1em;
+            color: #c9d1d9;
+        }
+        .highlight { color: #f39c12; font-weight: bold; }
+        .highlight-blue { color: #00d2ff; font-weight: bold; }
+        .highlight-green { color: #2ea043; font-weight: bold; }
+        
+        .code-box {
+            background-color: #161b22;
+            color: #c9d1d9;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: monospace !important;
+            font-size: 0.85em;
+            text-align: left;
+            border-left: 5px solid #58a6ff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-top: 20px;
+        }
+        .box-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .icon-large {
+            font-size: 2.5em;
+            color: #f39c12;
+            margin-bottom: 20px;
+        }
+        /* Custom layout */
+        .flex-row { display: flex; justify-content: center; gap: 30px; }
+        .flex-col { flex: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1 -->
+            <section data-transition="zoom">
+                <i class="fab fa-js icon-large" style="color: #f7df1e;"></i>
+                <h1>JavaScript <span class="highlight">Onscroll Events</span></h1>
+                <h3>ပြည့်စုံသော လမ်းညွှန်ချက် (မြန်မာဘာသာ)</h3>
+                <p>ခလုတ်နှိပ်စရာမလို၊ Mouse Scroll ဆွဲရုံဖြင့် အလုပ်လုပ်သော နည်းပညာများ</p>
+                <br>
+                <p style="font-size: 0.7em; color: #8b949e;">Created for Web Developers</p>
+            </section>
+
+            <!-- Slide 2 -->
+            <section data-transition="slide">
+                <h2><i class="fas fa-info-circle"></i> မိတ်ဆက်</h2>
+                <div class="box-card">
+                    <p>ယနေ့ခေတ် Web Design များတွင် <span class="highlight">Scrolling</span> သည် အလွန်အရေးပါသော အခန်းကဏ္ဍမှ ပါဝင်လာပါသည်။</p>
+                    <p>User များသည် Page ကို အပေါ်အောက် ဆွဲချ/ဆွဲတင် လုပ်သည့်အခါ လှပသော Animation များ၊ အသစ်ပေါ်လာသော Data များကို တွေ့မြင်ရလေ့ရှိပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 3 -->
+            <section data-transition="slide">
+                <h2><i class="fas fa-bolt"></i> DOM Events ဆိုတာ ဘာလဲ?</h2>
+                <ul>
+                    <li class="fragment">User က Web Page ပေါ်မှာ ပြုလုပ်လိုက်တဲ့ <strong>လှုပ်ရှားမှု (Actions)</strong> တွေကို ခေါ်ပါတယ်။</li>
+                    <li class="fragment">ဥပမာ - Click နှိပ်ခြင်း၊ Keyboard ရိုက်ခြင်း၊ Mouse ရွှေ့ခြင်း စသည်တို့ဖြစ်ပါသည်။</li>
+                    <li class="fragment">ထိုအထဲမှ အသုံးအများဆုံးတစ်ခုမှာ <strong>Scroll Event</strong> ဖြစ်ပါသည်။</li>
+                </ul>
+            </section>
+
+            <!-- Slide 4 -->
+            <section data-transition="fade">
+                <h2><i class="fas fa-arrows-alt-v"></i> Onscroll Event ဆိုတာ?</h2>
+                <div class="box-card">
+                    <p>User က Mouse Wheel ကိုလှိမ့်၍ဖြစ်စေ၊ Phone Screen ကို ပွတ်ဆွဲ၍ဖြစ်စေ Web Page (သို့) Element တစ်ခုကို <span class="highlight-blue">အပေါ်/အောက် ရွှေ့လိုက်သောအခါ</span> အလုပ်လုပ်မည့် Event ဖြစ်ပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 5 -->
+            <section data-transition="slide">
+                <h2>ဘာကြောင့် Scroll Event ကို သုံးတာလဲ?</h2>
+                <div class="flex-row">
+                    <div class="flex-col fragment box-card">
+                        <i class="fas fa-magic icon-large"></i>
+                        <h4>UI/UX ပိုကောင်းစေရန်</h4>
+                    </div>
+                    <div class="flex-col fragment box-card">
+                        <i class="fas fa-server icon-large"></i>
+                        <h4>Data ကို လိုမှ ခေါ်ရန် (Lazy Load)</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6 -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-code"></i> အခြေခံ ရေးသားနည်းများ</h2>
+                <p>Scroll Event ကို JavaScript တွင် နည်းလမ်း (၃) မျိုးဖြင့် ရေးသားနိုင်ပါသည်။</p>
+                <ol>
+                    <li class="fragment">HTML Inline Attribute အဖြစ်ရေးခြင်း</li>
+                    <li class="fragment">DOM Element Property အနေဖြင့်ရေးခြင်း</li>
+                    <li class="fragment"><strong>addEventListener</strong> အသုံးပြုခြင်း (အကောင်းဆုံးနည်းလမ်း)</li>
+                </ol>
+            </section>
+
+            <!-- Slide 7 -->
+            <section data-transition="slide">
+                <h2>၁. HTML Inline Attribute</h2>
+                <p>HTML Tag ထဲတွင် တိုက်ရိုက် ရေးသားသောနည်း ဖြစ်ပါသည်။</p>
+                <div class="code-box">
+                    &lt;body onscroll="myScrollFunction()"&gt; <br>
+                    &nbsp;&nbsp;&lt;!-- Content Here --&gt; <br>
+                    &lt;/body&gt;
+                </div>
+                <p class="fragment" style="color: #ff7b72; font-size: 0.9em; margin-top: 15px;">* ယနေ့ခေတ်တွင် ဤနည်းကို အသုံးမပြုတော့ပါ။ (Not Recommended)</p>
+            </section>
+
+            <!-- Slide 8 -->
+            <section data-transition="slide">
+                <h2>၂. DOM Property နည်းလမ်း</h2>
+                <p>JavaScript ဘက်မှနေ၍ DOM ကို လှမ်းခေါ်ပြီး ရေးသောနည်းဖြစ်ပါသည်။</p>
+                <div class="code-box">
+                    window.onscroll = function() { <br>
+                    &nbsp;&nbsp;console.log("Scrolling..."); <br>
+                    };
+                </div>
+                <p class="fragment" style="font-size: 0.9em;">အားနည်းချက် - Event တစ်ခုတည်းသာ ထည့်သွင်းနိုင်ပါသည်။ (Overwritten ဖြစ်လွယ်သည်)</p>
+            </section>
+
+            <!-- Slide 9 -->
+            <section data-transition="slide">
+                <h2>၃. addEventListener (အကောင်းဆုံး)</h2>
+                <p>Modern Web Development တွင် အသုံးပြုရန် အသင့်တော်ဆုံး နည်းလမ်းဖြစ်ပါသည်။</p>
+                <div class="code-box">
+                    window.addEventListener('scroll', function() { <br>
+                    &nbsp;&nbsp;console.log("User is scrolling!"); <br>
+                    });
+                </div>
+            </section>
+
+            <!-- Slide 10 -->
+            <section data-transition="zoom">
+                <h2>addEventListener ရဲ့ အားသာချက်များ</h2>
+                <ul>
+                    <li class="fragment">Function များစွာကို Event တစ်ခုထဲတွင် ထည့်ရေးနိုင်ခြင်း။</li>
+                    <li class="fragment"><code>removeEventListener</code> ဖြင့် ပြန်လည်ဖြုတ်ပစ်နိုင်ခြင်း။</li>
+                    <li class="fragment">Performance ကို ပိုမိုထိန်းချုပ်နိုင်ခြင်း (ဥပမာ - <code>{ passive: true }</code>)။</li>
+                </ul>
+            </section>
+
+            <!-- Slide 11 -->
+            <section data-transition="slide">
+                <h2><i class="fas fa-window-maximize"></i> Window Object နဲ့ Scroll</h2>
+                <div class="box-card">
+                    <p>Web Page တစ်ခုလုံးကို Scroll ဆွဲသည်ကို သိချင်လျှင် <span class="highlight">window</span> object ကို အသုံးပြုရပါသည်။</p>
+                    <p>Browser window တစ်ခုလုံး၏ ရွေ့လျားမှုကို တိုင်းတာခြင်းဖြစ်ပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 12 -->
+            <section data-transition="slide">
+                <h2>window.scrollY ဆိုတာ ဘာလဲ?</h2>
+                <p>Document ၏ အပေါ်ဘက် (Top) မှနေ၍ အောက်သို့ <span class="highlight">Pixel မည်မျှ</span> ရွှေ့သွားပြီလဲ ဆိုသည်ကို ဖော်ပြပေးသော Property ဖြစ်ပါသည်။</p>
+                <div class="code-box fragment">
+                    let topOffset = window.scrollY; <br>
+                    console.log("Scrolled from top: " + topOffset + "px");
+                </div>
+            </section>
+
+            <!-- Slide 13 -->
+            <section data-transition="slide">
+                <h2>window.scrollX</h2>
+                <p>အကယ်၍ Website သည် ဘေးတိုက် (Horizontal) Scroll ပါဝင်ပါက၊ ဘယ်ဘက်မှ ညာဘက်သို့ Pixel မည်မျှရွှေ့သွားကြောင်း တိုင်းတာပေးပါသည်။</p>
+                <div class="code-box fragment">
+                    let leftOffset = window.scrollX; <br>
+                    console.log("Scrolled from left: " + leftOffset + "px");
+                </div>
+            </section>
+
+            <!-- Slide 14 -->
+            <section data-transition="slide">
+                <h2>scrollY vs pageYOffset</h2>
+                <div class="box-card">
+                    <p><span class="highlight">window.pageYOffset</span> သည် <code>window.scrollY</code> ၏ နာမည်ဟောင်း (Alias) သာဖြစ်ပါသည်။</p>
+                    <p>Browser အဟောင်းများအတွက် pageYOffset ကို သုံးခဲ့ကြသော်လည်း ယခုအခါ <strong>scrollY</strong> ကိုသာ အများဆုံး သုံးကြပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 15 -->
+            <section data-transition="fade">
+                <h2>Window Scroll ဥပမာ</h2>
+                <p>Scroll ဆွဲတိုင်း မည်မျှရောက်နေပြီကို စစ်ဆေးခြင်း။</p>
+                <div class="code-box">
+                    window.addEventListener('scroll', () => { <br>
+                    &nbsp;&nbsp;if (window.scrollY > 500) { <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;console.log("Passed 500 pixels!"); <br>
+                    &nbsp;&nbsp;} <br>
+                    });
+                </div>
+            </section>
+
+            <!-- Slide 16 -->
+            <section data-transition="slide">
+                <h2><i class="fas fa-cube"></i> Element-level Scrolling</h2>
+                <p>Window တစ်ခုလုံးမဟုတ်ဘဲ၊ Box (သို့) Div အသေးလေးတစ်ခုအတွင်းတွင် Scroll ဆွဲခြင်းကိုလည်း ဖမ်းယူနိုင်ပါသည်။</p>
+                <p class="fragment highlight">၎င်းအတွက် ထို Element တွင် <code>overflow: auto</code> သို့မဟုတ် <code>scroll</code> ရှိရန်လိုအပ်ပါသည်။</p>
+            </section>
+
+            <!-- Slide 17 -->
+            <section data-transition="slide">
+                <h2>element.scrollTop</h2>
+                <p>ရွေးချယ်ထားသော Element ၏ အတွင်းဘက်တွင် အပေါ်မှနေ၍ အောက်သို့ Pixel မည်မျှ Scroll လုပ်ထားသလဲကို ပြသပါသည်။</p>
+                <div class="code-box">
+                    let myBox = document.getElementById("box"); <br>
+                    myBox.addEventListener("scroll", function() { <br>
+                    &nbsp;&nbsp;console.log(this.scrollTop); <br>
+                    });
+                </div>
+            </section>
+
+            <!-- Slide 18 -->
+            <section data-transition="slide">
+                <h2>element.scrollLeft</h2>
+                <p>Element ၏ အတွင်းဘက် ဘယ်မှညာသို့ Scroll ပမာဏကို တိုင်းတာခြင်းဖြစ်ပါသည်။ ဇယား (Table) များတွင် အသုံးများပါသည်။</p>
+                <div class="code-box fragment">
+                    let myTable = document.getElementById("tableContainer"); <br>
+                    console.log(myTable.scrollLeft);
+                </div>
+            </section>
+
+            <!-- Slide 19 -->
+            <section data-transition="convex">
+                <h2>element.scrollHeight</h2>
+                <div class="box-card">
+                    <p>မျက်စိဖြင့် မြင်ရသောအပိုင်းရော၊ Scroll ဆွဲမှ မြင်ရမည့် ဖုံးကွယ်နေသောအပိုင်းပါ ပေါင်းထားသည့် <strong>Content တစ်ခုလုံး၏ အမြင့် (Total Height)</strong> ဖြစ်ပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 20 -->
+            <section data-transition="convex">
+                <h2>element.clientHeight</h2>
+                <div class="box-card">
+                    <p>Element အတွင်း မျက်စိဖြင့် လက်ရှိမြင်နေရသော <strong>Screen Area ၏ အမြင့် (Visible Height)</strong> သီးသန့်ကိုသာ ဆိုလိုပါသည်။ Border များ မပါဝင်ပါ။</p>
+                </div>
+            </section>
+
+            <!-- Slide 21 -->
+            <section data-transition="slide">
+                <h2>ScrollHeight vs ClientHeight</h2>
+                <table style="width: 100%; font-size: 0.8em; color: #fff;">
+                    <tr>
+                        <th style="border-bottom: 2px solid #58a6ff; padding-bottom: 10px;">Property</th>
+                        <th style="border-bottom: 2px solid #58a6ff; padding-bottom: 10px;">အဓိပ္ပါယ်</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px 0;">scrollHeight</td>
+                        <td>စာကြောင်းအားလုံး (မမြင်ရတာတွေပါ) အပေါင်းအမြင့်</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px 0;">clientHeight</td>
+                        <td>လက်ရှိ ဖန်သားပြင်ပေါ် မြင်နေရတဲ့ အမြင့်သီးသန့်</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px 0;">scrollTop</td>
+                        <td>အပေါ်ကို ရောက်သွားတဲ့ (ဖုံးသွားတဲ့) ပမာဏ</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- Slide 22 -->
+            <section data-transition="zoom">
+                <h2><i class="fas fa-laptop-code"></i> လက်တွေ့အသုံးပြုမှုများ (Use Cases)</h2>
+                <p>Scroll Events ကို အသုံးပြု၍ ဖန်တီးလေ့ရှိသော နာမည်ကြီး Features (၄) ခုကို လေ့လာကြည့်ကြပါမည်။</p>
+            </section>
+
+            <!-- Slide 23 -->
+            <section data-transition="slide">
+                <h2>Use Case 1: Sticky Navbar</h2>
+                <div class="box-card">
+                    <p>Website ကို အောက်သို့ ဆွဲချလိုက်သောအခါ Navigation Menu Bar သည် ပျောက်မသွားဘဲ အပေါ်ထိပ်တွင် <span class="highlight-green">ကပ်ပါလာခြင်း (Sticky)</span> ဖြစ်ပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 24 -->
+            <section data-transition="slide">
+                <h2>Sticky Nav အလုပ်လုပ်ပုံ</h2>
+                <ol>
+                    <li class="fragment">Window ကို Scroll ဆွဲလိုက်တိုင်း <code>window.scrollY</code> ကို စစ်ဆေးပါမည်။</li>
+                    <li class="fragment">သတ်မှတ်ထားသော အမြင့် (ဥပမာ 100px) ထက် ကျော်လွန်သွားပါက...</li>
+                    <li class="fragment">Navbar ထဲသို့ <code>sticky</code> ဆိုသော CSS class တစ်ခု ထည့်ပေးပါမည်။</li>
+                </ol>
+            </section>
+
+            <!-- Slide 25 -->
+            <section data-transition="fade">
+                <h2>Sticky Nav (Code Example)</h2>
+                <div class="code-box">
+                    const nav = document.querySelector('nav'); <br><br>
+                    window.addEventListener('scroll', () => { <br>
+                    &nbsp;&nbsp;if (window.scrollY > 100) { <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;nav.classList.add('sticky'); <br>
+                    &nbsp;&nbsp;} else { <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;nav.classList.remove('sticky'); <br>
+                    &nbsp;&nbsp;} <br>
+                    });
+                </div>
+            </section>
+
+            <!-- Slide 26 -->
+            <section data-transition="slide">
+                <h2>Use Case 2: Infinite Scrolling</h2>
+                <div class="box-card">
+                    <p>Facebook (သို့) TikTok ကဲ့သို့ အောက်ဆုံးသို့ ရောက်သွားတိုင်း <span class="highlight-blue">နောက်ထပ် Data အသစ်များ အလိုအလျောက် ပေါ်လာသော</span> စနစ်ဖြစ်ပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 27 -->
+            <section data-transition="slide">
+                <h2>Infinite Scroll သဘောတရား</h2>
+                <ul>
+                    <li class="fragment">User သည် Web Page ၏ <strong class="highlight">အောက်ခြေဆုံး (Bottom)</strong> သို့ ရောက်မရောက် အမြဲစစ်ဆေးနေရပါမည်။</li>
+                    <li class="fragment">အောက်ဆုံးရောက်သွားပါက Server ဆီမှ (API ဖြင့်) နောက်ထပ် Data များကို လှမ်းတောင်းပါမည်။</li>
+                </ul>
+            </section>
+
+            <!-- Slide 28 -->
+            <section data-transition="slide">
+                <h2>အောက်ဆုံးရောက်မရောက် စစ်ဆေးခြင်း</h2>
+                <p>ယင်းအတွက် အရေးကြီးသော Property (၃) ခုလိုပါသည်။</p>
+                <ul>
+                    <li><code>window.innerHeight</code> (လက်ရှိမြင်ရတဲ့အမြင့်)</li>
+                    <li><code>window.scrollY</code> (Scroll ဆွဲချလိုက်တဲ့ပမာဏ)</li>
+                    <li><code>document.body.offsetHeight</code> (Page တစ်ခုလုံးရဲ့ အမြင့်)</li>
+                </ul>
+            </section>
+
+            <!-- Slide 29 -->
+            <section data-transition="convex">
+                <h2>တွက်ချက်မှု ပုံသေနည်း (Math Logic)</h2>
+                <div class="box-card" style="text-align: center;">
+                    <h4 style="color: #fff;">
+                        ( scrollY + innerHeight ) >= offsetHeight
+                    </h4>
+                </div>
+                <p class="fragment" style="margin-top: 20px;">အပေါ်ပါ နှစ်ခုပေါင်းလဒ်သည် Document အမြင့်နှင့် ညီသွားလျှင် (သို့) ကြီးသွားလျှင် <span class="highlight">အောက်ဆုံးသို့ ရောက်ပြီ</span> ဟု သတ်မှတ်နိုင်ပါသည်။</p>
+            </section>
+
+            <!-- Slide 30 -->
+            <section data-transition="fade">
+                <h2>Infinite Scroll (Code Example)</h2>
+                <div class="code-box">
+                    window.addEventListener('scroll', () => { <br>
+                    &nbsp;&nbsp;let scrollable = document.documentElement.scrollHeight - window.innerHeight; <br>
+                    &nbsp;&nbsp;let scrolled = window.scrollY; <br><br>
+                    &nbsp;&nbsp;if (Math.ceil(scrolled) === scrollable) { <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;alert("You reached the bottom! Loading more..."); <br>
+                    &nbsp;&nbsp;} <br>
+                    });
+                </div>
+            </section>
+
+            <!-- Slide 31 -->
+            <section data-transition="slide">
+                <h2>Use Case 3: Scroll Animations</h2>
+                <div class="box-card">
+                    <p>Web Page ကို အောက်သို့ ဆွဲချလိုက်စဉ် ပုံများ၊ စာများက <span class="highlight-green">Fade In, Slide In</span> စသည့် Animation များဖြင့် လှပစွာ ထွက်လာခြင်းကို ခေါ်ပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 32 -->
+            <section data-transition="slide">
+                <h2>Element ကို မြင်ရ/မမြင်ရ စစ်ဆေးခြင်း</h2>
+                <p>Scroll ဆွဲလိုက်တိုင်း Element သည် Browser Viewport (လက်ရှိမြင်ကွင်း) ထဲသို့ ဝင်လာခြင်း ရှိ/မရှိ စစ်ဆေးရန် လိုအပ်ပါသည်။</p>
+                <p class="fragment">ယင်းအတွက် <code class="highlight">getBoundingClientRect()</code> ကို အသုံးပြုလေ့ရှိပါသည်။</p>
+            </section>
+
+            <!-- Slide 33 -->
+            <section data-transition="zoom">
+                <h2>getBoundingClientRect() ဆိုတာ?</h2>
+                <ul>
+                    <li>Element ၏ အရွယ်အစားနှင့် Browser Window အပေါ်မူတည်၍ တည်နေရာ (Position) ကို ပြန်ပေးသော Function ဖြစ်ပါသည်။</li>
+                    <li class="fragment"><code>rect.top</code> သည် Screen အပေါ်ဘက်နှင့် Element အကြား အကွာအဝေးကို ပြပါသည်။</li>
+                </ul>
+            </section>
+
+            <!-- Slide 34 -->
+            <section data-transition="slide">
+                <h2>Animation Class ထည့်သွင်းခြင်း</h2>
+                <p><code>rect.top</code> သည် Window ၏ အမြင့် (innerHeight) အောက် ငယ်သွားလျှင် (ဆိုလိုသည်မှာ Viewport ထဲ ဝင်လာလျှင်) ထို Element ကို <span class="highlight">CSS 'show' class</span> ထည့်ပေးရပါမည်။</p>
+            </section>
+
+            <!-- Slide 35 -->
+            <section data-transition="fade">
+                <h2>Scroll Animation (Code Example)</h2>
+                <div class="code-box">
+                    let boxes = document.querySelectorAll('.box'); <br><br>
+                    window.addEventListener('scroll', () => { <br>
+                    &nbsp;&nbsp;let triggerBottom = window.innerHeight * 0.8; <br><br>
+                    &nbsp;&nbsp;boxes.forEach(box => { <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;let boxTop = box.getBoundingClientRect().top; <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;if(boxTop &lt; triggerBottom) { <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box.classList.add('show'); <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;} <br>
+                    &nbsp;&nbsp;}); <br>
+                    });
+                </div>
+            </section>
+
+            <!-- Slide 36 -->
+            <section data-transition="slide">
+                <h2>Use Case 4: Scroll Progress Bar</h2>
+                <div class="box-card">
+                    <p>စာဖတ်နေစဉ် အပေါ်ဆုံး နားတွင် <span class="highlight">Line လေးတစ်ခု ပြေးနေပြီး</span> ဆောင်းပါး ဘယ်လောက်ဖတ်ပြီးသွားပြီလဲ ပြပေးသော Feature ဖြစ်ပါသည်။ (Medium ကဲ့သို့ Blog များတွင် တွေ့ရသည်)</p>
+                </div>
+            </section>
+
+            <!-- Slide 37 -->
+            <section data-transition="slide">
+                <h2>Progress Bar သဘောတရား</h2>
+                <ul>
+                    <li class="fragment">Scroll ဆွဲနိုင်သည့် စုစုပေါင်း အကွာအဝေးကို ရှာပါ။</li>
+                    <li class="fragment">လက်ရှိ Scroll ဆွဲပြီးသား အကွာအဝေးကို ရှာပါ။</li>
+                    <li class="fragment">ထိုနှစ်ခုကို စားပြီး ၁၀၀ ဖြင့် မြှောက်ကာ ရာခိုင်နှုန်း (Percentage) ရှာပါ။</li>
+                </ul>
+            </section>
+
+            <!-- Slide 38 -->
+            <section data-transition="slide">
+                <h2>ရာခိုင်နှုန်း တွက်ချက်ခြင်း</h2>
+                <div class="code-box">
+                    let winScroll = document.body.scrollTop || document.documentElement.scrollTop; <br>
+                    let height = document.documentElement.scrollHeight - document.documentElement.clientHeight; <br>
+                    let scrolled = (winScroll / height) * 100;
+                </div>
+            </section>
+
+            <!-- Slide 39 -->
+            <section data-transition="convex">
+                <h2>Width ပြောင်းလဲပေးခြင်း</h2>
+                <p>တွက်၍ရလာသော ရာခိုင်နှုန်းကို HTML တွင် ကြိုဆောက်ထားသော Progress Bar <code>&lt;div&gt;</code> ၏ <span class="highlight">CSS Width</span> အဖြစ် ထည့်သွင်းပေးရပါမည်။</p>
+            </section>
+
+            <!-- Slide 40 -->
+            <section data-transition="fade">
+                <h2>Progress Bar (Code Example)</h2>
+                <div class="code-box">
+                    window.onscroll = function() { <br>
+                    &nbsp;&nbsp;let winScroll = document.documentElement.scrollTop; <br>
+                    &nbsp;&nbsp;let height = document.documentElement.scrollHeight - document.documentElement.clientHeight; <br>
+                    &nbsp;&nbsp;let scrolled = (winScroll / height) * 100; <br>
+                    &nbsp;&nbsp;document.getElementById("myBar").style.width = scrolled + "%"; <br>
+                    };
+                </div>
+            </section>
+
+            <!-- Slide 41 -->
+            <section data-transition="slide">
+                <h2><i class="fas fa-exclamation-triangle" style="color:#ff4757"></i> Performance ပြဿနာများ</h2>
+                <div class="box-card">
+                    <p>Scroll Event ကို သတိမထားဘဲ အသုံးပြုလျှင် Website လေးလံသွားခြင်း (Lagging/Janky UI) များ ဖြစ်ပေါ်နိုင်ပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 42 -->
+            <section data-transition="slide">
+                <h2>Scroll က ဘာလို့ လေးတာလဲ?</h2>
+                <p>User က Mouse Wheel ကို တစ်ခါလှိမ့်လိုက်တိုင်း Scroll Event သည် <strong>စက္ကန့်ပိုင်းအတွင်း အကြိမ်ပေါင်းများစွာ (Dozens of times)</strong> အလုပ်လုပ်သွားသောကြောင့် ဖြစ်ပါသည်။</p>
+                <p class="fragment highlight">Function များ အလုပ်များလွန်းသွားခြင်း ဖြစ်သည်။</p>
+            </section>
+
+            <!-- Slide 43 -->
+            <section data-transition="zoom">
+                <h2>ဖြေရှင်းနည်း ၁: Debouncing</h2>
+                <p>Event များ ဆက်တိုက်ဝင်လာတိုင်း အလုပ်မလုပ်သေးဘဲ၊ <strong>User Scroll ဆွဲတာ ရပ်သွားမှသာ</strong> (ဥပမာ ၂၀၀ မီလီစက္ကန့်ကြာမှ) လုပ်ငန်းစဉ်ကို လုပ်ခိုင်းသော နည်းလမ်းဖြစ်ပါသည်။</p>
+            </section>
+
+            <!-- Slide 44 -->
+            <section data-transition="slide">
+                <h2>Debounce Code Concept</h2>
+                <div class="code-box">
+                    let timeout; <br>
+                    window.addEventListener('scroll', function() { <br>
+                    &nbsp;&nbsp;clearTimeout(timeout); <br>
+                    &nbsp;&nbsp;timeout = setTimeout(function() { <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;console.log("Stopped scrolling. Execute code!"); <br>
+                    &nbsp;&nbsp;}, 200); <br>
+                    });
+                </div>
+            </section>
+
+            <!-- Slide 45 -->
+            <section data-transition="zoom">
+                <h2>ဖြေရှင်းနည်း ၂: Throttling</h2>
+                <p>Scroll ဆွဲနေစဉ်အတွင်း Event များကို တရစပ် အလုပ်မလုပ်စေဘဲ <strong>အချိန်တစ်ခု သတ်မှတ်၍ (ဥပမာ သုညဒသမ ၅ စက္ကန့်လျှင် တစ်ကြိမ်သာ)</strong> အလုပ်လုပ်စေသော နည်းလမ်းဖြစ်ပါသည်။</p>
+            </section>
+
+            <!-- Slide 46 -->
+            <section data-transition="slide">
+                <h2>Throttle အလုပ်လုပ်ပုံ</h2>
+                <p>Debounce သည် ရပ်သွားမှ အလုပ်လုပ်သော်လည်း၊ Throttle သည် အချိန်ကိုက်၍ (Timer ဖြင့်) အလုပ်လုပ်ပေးသောကြောင့် Infinite Scroll ကဲ့သို့သော နေရာများတွင် ပိုသင့်တော်ပါသည်။</p>
+            </section>
+
+            <!-- Slide 47 -->
+            <section data-transition="slide">
+                <h2><i class="fas fa-star"></i> requestAnimationFrame အသုံးပြုခြင်း</h2>
+                <div class="box-card">
+                    <p>Scroll Animation များအတွက် အကောင်းဆုံးနှင့် အချောမွေ့ဆုံး ဖြေရှင်းနည်းမှာ <span class="highlight">window.requestAnimationFrame()</span> ကို အသုံးပြုခြင်းဖြစ်ပါသည်။ Browser ၏ Screen Refresh Rate နှင့် အညီ Animation ကို လုပ်ဆောင်ပေးပါသည်။</p>
+                </div>
+            </section>
+
+            <!-- Slide 48 -->
+            <section data-transition="convex">
+                <h2>Passive Event Listeners</h2>
+                <p>Scroll ဆွဲရာတွင် ပိုမိုမြန်ဆန်ချောမွေ့စေရန် `{ passive: true }` ကို ထည့်သုံးသင့်ပါသည်။</p>
+                <div class="code-box">
+                    window.addEventListener('scroll', myFunc, { passive: true });
+                </div>
+                <p class="fragment" style="font-size: 0.8em; margin-top: 10px;">(Browser ကို event.preventDefault() မသုံးပါဘူးလို့ ကြိုပြောထားခြင်းဖြစ်သည်)</p>
+            </section>
+
+            <!-- Slide 49 -->
+            <section data-transition="slide">
+                <h2><i class="fas fa-clipboard-check"></i> အနှစ်ချုပ် (Summary)</h2>
+                <ul>
+                    <li><code>window.scrollY</code> ဖြင့် အပေါ်မှစ၍ scroll ပမာဏကို သိနိုင်သည်။</li>
+                    <li>Sticky Nav, Infinite Scroll, Animations များအတွက် အဓိကသုံးသည်။</li>
+                    <li>Performance အတွက် Debounce (သို့) Throttle ကို အမြဲစဉ်းစားပါ။</li>
+                    <li>EventListener ထဲတွင် <code>{passive: true}</code> ကို ထည့်သုံးပါ။</li>
+                </ul>
+            </section>
+
+            <!-- Slide 50 -->
+            <section data-transition="zoom">
+                <i class="fas fa-thumbs-up icon-large" style="color: #2ea043; font-size: 4em;"></i>
+                <h1>ကျေးဇူးတင်ပါသည်</h1>
+                <h3>မေးမြန်းလိုသည်များ ရှိပါသလား ခင်ဗျာ?</h3>
+                <br>
+                <p style="color: #58a6ff;">Happy Coding!</p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.js"></script>
+    <script>
+        // Reveal.js Initialization
+        Reveal.initialize({
+            // Presentation Size Configuration for better readability
+            width: 1280,
+            height: 720,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0,
+
+            // Display controls in the bottom right corner
+            controls: true,
+
+            // Display a presentation progress bar
+            progress: true,
+
+            // Push each slide change to the browser history
+            history: true,
+
+            // Enable keyboard shortcuts for navigation
+            keyboard: true,
+
+            // Slide transition style
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            // Vertical centering of slides
+            center: true,
+
+            // Control which keyboard arrows navigate between slides
+            navigationMode: 'linear'
+        });
+    </script>
+</body>
+</html>
